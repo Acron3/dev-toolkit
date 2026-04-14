@@ -1,16 +1,16 @@
-# 🚀 Minimal API Debug Toolkit
+# Mini API Debug Toolkit
 
 A simple, fast, and no-login toolkit for backend developers to debug common API-related tasks.
 
-Built as a lightweight alternative to bulky tools — focused on speed and usability.
+Built as a lightweight alternative to bulky tools. Focused on speed and usability.
 
-## 🔧 Features
+## Features
 
-### ✅ JSON Formatter
+### JSON Formatter
 - Format and prettify JSON instantly
 - Handles invalid JSON with error feedback
 
-### 🔐 JWT Decoder
+### JWT Decoder
 - Decode JWT tokens quickly
 - View payload in readable JSON format
 - No data stored — everything runs in your browser
@@ -23,7 +23,7 @@ Built as a lightweight alternative to bulky tools — focused on speed and usabi
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - Next.js (App Router)
 - TypeScript
@@ -31,7 +31,7 @@ Built as a lightweight alternative to bulky tools — focused on speed and usabi
 
 ---
 
-## 🎯 Purpose
+## Purpose
 
 This project is built to:
 - Provide quick utilities for backend/API developers
