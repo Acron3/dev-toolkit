@@ -1,7 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
+const LARGE_TEXT_LIMIT = 100_000;
+const PREVIEW_TEXT_LIMIT = 1000;
 const ACCEPTED_FILE_TYPES = [
   "image/*",
   "application/pdf",
@@ -141,6 +143,36 @@ export default function Base64Tool() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
+  const inputRef = useRef("");
+  const outputRef = useRef("");
+
+  const makePreview = (text: string) =>
+    text.length > PREVIEW_TEXT_LIMIT ? `${text.slice(0, PREVIEW_TEXT_LIMIT)}...` : text;
+
+  const setInputPreview = (text: string) => {
+    inputRef.current = text;
+    setInput(makePreview(text));
+  };
+
+  const setOutputPreview = (text: string) => {
+    outputRef.current = text;
+    setOutput(makePreview(text));
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    inputRef.current = value;
+    setInput(value);
+  };
+
+  const handleInputPaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const text = e.clipboardData.getData("text");
+
+    if (text.length > LARGE_TEXT_LIMIT) {
+      e.preventDefault();
+      setInputPreview(text);
+    }
+  };
   const [copied, setCopied] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
@@ -215,7 +247,8 @@ export default function Base64Tool() {
         fileToEncode = await compressImageFile(selectedFile, quality);
       }
       const buffer = await fileToEncode.arrayBuffer();
-      setOutput(bytesToBase64(new Uint8Array(buffer)));
+      const encoded = bytesToBase64(new Uint8Array(buffer));
+      setOutputPreview(encoded);
       setError("");
     } catch {
       setError("Failed to encode the selected file.");
@@ -224,7 +257,7 @@ export default function Base64Tool() {
   };
 
   const decodeFile = () => {
-    const trimmed = input.trim();
+    const trimmed = inputRef.current.trim();
     if (!trimmed) {
       setError("Paste a Base64 string to decode.");
       setOutput("");
@@ -258,7 +291,7 @@ export default function Base64Tool() {
       setDecodedFileType(detectedMime);
       setDecodedFileName(`decoded-file${ext}`);
       setDecodedFileSize(bytes.length);
-      setOutput(base64);
+      setOutputPreview(base64);
       setError("");
     } catch {
       setError("Invalid Base64 string or unsupported file type.");
@@ -271,7 +304,14 @@ export default function Base64Tool() {
     resetPreviewState();
     if (mode === "text") {
       try {
-        setOutput(base64EncodeText(input));
+        const fullInput = inputRef.current;
+        if (!fullInput.trim()) {
+          setError("Enter text to encode.");
+          setOutput("");
+          return;
+        }
+        const encoded = base64EncodeText(fullInput);
+        setOutputPreview(encoded);
         setError("");
       } catch {
         setError("Failed to encode input.");
@@ -286,7 +326,14 @@ export default function Base64Tool() {
     resetPreviewState();
     if (mode === "text") {
       try {
-        setOutput(base64DecodeText(input));
+        const fullInput = inputRef.current;
+        if (!fullInput.trim()) {
+          setError("Paste a Base64 string to decode.");
+          setOutput("");
+          return;
+        }
+        const decoded = base64DecodeText(fullInput);
+        setOutputPreview(decoded);
         setError("");
       } catch {
         setError("Invalid Base64 string.");
@@ -314,6 +361,10 @@ export default function Base64Tool() {
               setMode("text");
               setError("");
               setSelectedFile(null);
+              inputRef.current = "";
+              outputRef.current = "";
+              setInput("");
+              setOutput("");
               resetPreviewState();
             }}
             className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
@@ -329,6 +380,8 @@ export default function Base64Tool() {
             onClick={() => {
               setMode("file");
               setError("");
+              inputRef.current = "";
+              outputRef.current = "";
               setInput("");
               setOutput("");
             }}
@@ -351,6 +404,8 @@ export default function Base64Tool() {
                 onClick={() => {
                   setFileAction("encode");
                   setError("");
+                  inputRef.current = "";
+                  outputRef.current = "";
                   setInput("");
                   setOutput("");
                   resetPreviewState();
@@ -368,8 +423,12 @@ export default function Base64Tool() {
                 onClick={() => {
                   setFileAction("decode");
                   setError("");
+                  inputRef.current = "";
+                  outputRef.current = "";
                   setSelectedFile(null);
                   setPreviewUrl("");
+                  setInput("");
+                  setOutput("");
                   resetPreviewState();
                 }}
                 className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
@@ -488,7 +547,8 @@ export default function Base64Tool() {
                     : "Paste Base64 string here to decode..."
                 }
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onPaste={handleInputPaste}
+                onChange={handleInputChange}
               />
             </div>
           )}
@@ -545,8 +605,9 @@ export default function Base64Tool() {
               <button
                 type="button"
                 onClick={async () => {
-                  if (!output) return;
-                  await navigator.clipboard.writeText(output);
+                  const textToCopy = outputRef.current || output;
+                  if (!textToCopy) return;
+                  await navigator.clipboard.writeText(textToCopy);
                   setCopied(true);
                   window.setTimeout(() => setCopied(false), 1500);
                 }}
