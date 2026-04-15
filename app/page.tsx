@@ -2,21 +2,38 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Minimal API Debug Toolkit</h1>
+    <div className="max-w-4xl mx-auto">
+      {/* Hero Section */}
+      <section className="text-center mb-12">
+        <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          Welcome to Mini API Debug Toolkit
+        </h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+          A simple, fast, and no-login toolkit for backend developers to debug common API-related tasks.
+        </p>
+      </section>
 
-      <ul className="space-y-2">
-        <li>
-          <Link href="/tools/json" className="text-blue-500 underline">
-            JSON Formatter
+      {/* Features Section */}
+      <section className="grid md:grid-cols-2 gap-8 mb-12">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">JSON Formatter</h3>
+          <p className="text-gray-600 dark:text-gray-300">
+            Format and validate your JSON data with ease. Perfect for debugging API responses.
+          </p>
+          <Link href="/tools/json" className="mt-4 inline-block text-blue-500 hover:underline">
+            Try it now →
           </Link>
-        </li>
-        <li>
-          <Link href="/tools/jwt" className="text-blue-500 underline">
-            JWT Decoder
+        </div>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">JWT Decoder</h3>
+          <p className="text-gray-600 dark:text-gray-300">
+            Decode and inspect JWT tokens to understand their payload and headers.
+          </p>
+          <Link href="/tools/jwt" className="mt-4 inline-block text-blue-500 hover:underline">
+            Try it now →
           </Link>
-        </li>
-      </ul>
-    </main>
+        </div>
+      </section>
+    </div>
   );
 }
