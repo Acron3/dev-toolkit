@@ -55,10 +55,12 @@ export default function Layout({ children }: LayoutProps) {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
+  const sidebarWidth = isSidebarCollapsed ? 64 : 256;
+
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex">
+    <div className="h-screen bg-gray-100 dark:bg-gray-900 flex overflow-hidden">
       {/* Sidebar */}
-      <aside className={`bg-white dark:bg-gray-800 shadow-lg transition-all duration-300 ${isSidebarCollapsed ? 'w-16' : 'w-64'}`}>
+      <aside className={`fixed inset-y-0 left-0 top-0 bg-white dark:bg-gray-800 shadow-lg transition-all duration-300 ${isSidebarCollapsed ? 'w-16' : 'w-64'}`}>
         <div className="py-6 px-2 flex items-center justify-center space-x-2">
           {!isSidebarCollapsed && <h2 className="text-xl font-bold text-gray-800 dark:text-white">Mini API Debug Toolkit</h2>}
           <button
@@ -110,9 +112,9 @@ export default function Layout({ children }: LayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col overflow-hidden" style={{ marginLeft: sidebarWidth }}>
         {/* Header */}
-        <header className="bg-white dark:bg-gray-800 shadow-sm p-4">
+        <header className="sticky top-0 z-20 bg-white dark:bg-gray-800 shadow-sm p-4">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Mini API Debug Toolkit</h1>
             <div className="flex items-center space-x-4">
@@ -126,15 +128,17 @@ export default function Layout({ children }: LayoutProps) {
           </div>
         </header>
 
-        {/* Content */}
-        <main className="flex-1 p-8">
-          {children}
-        </main>
+        <div className="flex-1 overflow-auto">
+          {/* Content */}
+          <main className="p-8">
+            {children}
+          </main>
 
-        {/* Footer */}
-        <footer className="text-center text-gray-500 dark:text-gray-400">
-          <p>&copy; 2026 Mini API Debug Toolkit. Built with Love and Passion.</p>
-        </footer>
+          {/* Footer */}
+          <footer className="text-center text-gray-500 dark:text-gray-400 p-4">
+            <p>&copy; 2026 Mini API Debug Toolkit. Built with Love and Passion.</p>
+          </footer>
+        </div>
       </div>
     </div>
   );
