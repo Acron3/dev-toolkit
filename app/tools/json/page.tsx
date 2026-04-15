@@ -5,6 +5,7 @@ export default function JsonFormatter() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const handleFormat = () => {
     try {
@@ -55,11 +56,36 @@ export default function JsonFormatter() {
           <label className="mt-6 block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
             Formatted Output
           </label>
-          <textarea
-            className="w-full min-h-[240px] rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-            value={output}
-            readOnly
-          />
+          <div className="relative">
+            <textarea
+              className="w-full min-h-[240px] rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+              value={output}
+              readOnly
+            />
+            <button
+              type="button"
+              onClick={async () => {
+                await navigator.clipboard.writeText(output);
+                setCopied(true);
+                window.setTimeout(() => setCopied(false), 1500);
+              }}
+              disabled={!output}
+              title={copied ? "Copied!" : "Copy formatted JSON"}
+              aria-label="Copy formatted JSON"
+              className="absolute right-3 top-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-200 dark:text-slate-950 dark:hover:bg-slate-100"
+            >
+              {copied ? (
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M8 17H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" />
+                  <rect x="8" y="8" width="12" height="12" rx="2" />
+                </svg>
+              )}
+            </button>
+          </div>
         </section>
       </div>
   );

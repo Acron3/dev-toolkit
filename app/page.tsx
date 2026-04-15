@@ -33,6 +33,24 @@ export default function Home() {
             Try it now →
           </Link>
         </div>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Timestamp Converter</h3>
+          <p className="text-gray-600 dark:text-gray-300">
+            Convert timestamps to readable dates or turn date strings into Unix timestamp values.
+          </p>
+          <Link href="/tools/timestamp" className="mt-4 inline-block text-blue-500 hover:underline">
+            Try it now →
+          </Link>
+        </div>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Base64 Encoder / Decoder</h3>
+          <p className="text-gray-600 dark:text-gray-300">
+            Encode text to Base64 or decode Base64 strings back to plain text.
+          </p>
+          <Link href="/tools/base64" className="mt-4 inline-block text-blue-500 hover:underline">
+            Try it now →
+          </Link>
+        </div>
       </section>
     </div>
   );

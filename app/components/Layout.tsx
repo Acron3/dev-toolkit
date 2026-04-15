@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useReducer, useState } from "react";
-import { Bars3Icon, XMarkIcon, HomeIcon, DocumentTextIcon, LockClosedIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, HomeIcon, DocumentTextIcon, LockClosedIcon, ClockIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -91,6 +91,18 @@ export default function Layout({ children }: LayoutProps) {
               <Link href="/tools/jwt" className={`flex items-center gap-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded ${isSidebarCollapsed ? 'justify-center' : 'px-4'}`}>
                 <LockClosedIcon className="h-5 w-5" />
                 {!isSidebarCollapsed && <span>JWT Decoder</span>}
+              </Link>
+            </li>
+            <li>
+              <Link href="/tools/timestamp" className={`flex items-center gap-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded ${isSidebarCollapsed ? 'justify-center' : 'px-4'}`}>
+                <ClockIcon className="h-5 w-5" />
+                {!isSidebarCollapsed && <span>Timestamp Converter</span>}
+              </Link>
+            </li>
+            <li>
+              <Link href="/tools/base64" className={`flex items-center gap-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded ${isSidebarCollapsed ? 'justify-center' : 'px-4'}`}>
+                <CodeBracketIcon className="h-5 w-5" />
+                {!isSidebarCollapsed && <span>Base64 Tool</span>}
               </Link>
             </li>
           </ul>
