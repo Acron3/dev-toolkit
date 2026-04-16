@@ -18,7 +18,7 @@ export default function Home() {
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
           <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">JSON Formatter</h3>
           <p className="text-gray-600 dark:text-gray-300">
-            Format and validate your JSON data with ease. Perfect for debugging API responses.
+            Auto-parse key/value lines to JSON, support <code className="rounded bg-slate-100 px-1 py-0.5 text-xs text-slate-700 dark:bg-slate-700 dark:text-slate-100">:</code> and <code className="rounded bg-slate-100 px-1 py-0.5 text-xs text-slate-700 dark:bg-slate-700 dark:text-slate-100">=</code>, and reverse JSON back to object.
           </p>
           <Link href="/tools/json" className="mt-4 inline-block text-blue-500 hover:underline">
             Try it now →

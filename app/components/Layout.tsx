@@ -80,7 +80,10 @@ export default function Layout({ children }: LayoutProps) {
             <li>
               <Link href="/tools/json" className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                 <DocumentTextIcon className="h-5 w-5" />
-                <span>JSON Formatter</span>
+                <div className="flex flex-col">
+                  <span>JSON Formatter</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">auto parse + reverse</span>
+                </div>
               </Link>
             </li>
             <li>
